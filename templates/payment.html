@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="booking-container text-center">
+        <h2 class="mb-4">Payment</h2>
+        <p class="lead">Total Amount: <span class="price">₹{{ reservation.total_price }}</span></p>
+        <form method="POST">
+            <button type="submit" class="btn btn-success btn-lg">Pay Now</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

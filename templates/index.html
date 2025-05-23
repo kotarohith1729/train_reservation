@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section text-center py-5">
+    <h1 class="display-4 text-success mb-3">Train Ticket Booking</h1>
+    <p class="lead mb-4">Easy Train Booking</p>
+
+    <div class="search-container bg-white p-4 rounded shadow-sm">
+        <form action="{{ url_for('search') }}" method="POST" class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="source" class="form-label">
+                        <i class="fas fa-train"></i> From
+                    </label>
+                    <input type="text" class="form-control" id="source" name="source" placeholder="Enter source station"
+                        required>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="destination" class="form-label">
+                        <i class="fas fa-train"></i> To
+                    </label>
+                    <input type="text" class="form-control" id="destination" name="destination"
+                        placeholder="Enter destination station" required>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="date" class="form-label">
+                        <i class="far fa-calendar"></i> Departure Date
+                    </label>
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-success w-100">SEARCH</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="features-section py-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="feature-card text-center p-4">
+                <i class="fas fa-ticket-alt fa-3x text-success mb-3"></i>
+                <h3>Easy Booking</h3>
+                <p>Book your train tickets with just a few clicks</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card text-center p-4">
+                <i class="fas fa-clock fa-3x text-success mb-3"></i>
+                <h3>Real-time Updates</h3>
+                <p>Get instant updates about your train status</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card text-center p-4">
+                <i class="fas fa-shield-alt fa-3x text-success mb-3"></i>
+                <h3>Secure Payments</h3>
+                <p>Safe and secure payment options</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

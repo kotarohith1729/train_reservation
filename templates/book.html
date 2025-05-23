@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="booking-container">
+        <h2 class="mb-4">Book Train Tickets</h2>
+
+        <div class="train-details mb-4">
+            <h4>{{ train.name }}</h4>
+            <p class="text-muted">Train No: {{ train.train_number }}</p>
+
+            <div class="d-flex justify-content-between mb-3">
+                <div>
+                    <strong>{{ train.departure_time.strftime('%H:%M') }}</strong>
+                    <div class="text-muted">{{ train.source }}</div>
+                </div>
+                <div class="border-top my-3" style="width: 50px;"></div>
+                <div>
+                    <strong>{{ train.arrival_time.strftime('%H:%M') }}</strong>
+                    <div class="text-muted">{{ train.destination }}</div>
+                </div>
+            </div>
+
+            <div class="price-info mb-4">
+                <span class="text-muted">Price per ticket:</span>
+                <span class="price">₹{{ train.price }}</span>
+            </div>
+        </div>
+
+        <form method="POST" action="{{ url_for('book', train_id=train.id) }}">
+            <div class="mb-3">
+                <label for="travel_date" class="form-label">Travel Date</label>
+                <input type="date" class="form-control" id="travel_date" name="travel_date" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="num_seats" class="form-label">Number of Seats</label>
+                {% set max_seats = 7 if train.available_seats + 1 > 7 else train.available_seats + 1 %}
+                <select class="form-control" id="num_seats" name="num_seats" required>
+                    {% for i in range(1, max_seats) %}
+                    <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <small class="text-muted">{{ train.available_seats }} seats available</small>
+            </div>
+
+            <div class="total-section mb-4">
+                <h5>Fare Summary</h5>
+                <div class="d-flex justify-content-between">
+                    <span>Base Fare</span>
+                    <span class="price">₹<span id="base-fare">0</span></span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <strong>Total Amount</strong>
+                    <strong class="price">₹<span id="total-amount">0</span></strong>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Proceed to Payment</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var numSeats = document.getElementById('num_seats');
+        var baseFare = document.getElementById('base-fare');
+        var totalAmount = document.getElementById('total-amount');
+        var pricePerSeat = {{ train.price| float
+    }};
+    numSeats.addEventListener('change', function () {
+        var seats = parseInt(this.value);
+        var fare = seats * pricePerSeat;
+        baseFare.textContent = fare;
+        totalAmount.textContent = fare;
+    });
+    // Set initial values
+    numSeats.dispatchEvent(new Event('change'));
+    // Set min date to today
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementById('travel_date').min = today;
+    });
+</script>
+{% endblock %}

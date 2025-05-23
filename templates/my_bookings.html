@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">My Bookings</h2>
+
+    {% if reservations %}
+    {% for reservation in reservations %}
+    <div class="train-card">
+        <div class="booking-header d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h4 class="mb-1">Booking ID: {{ reservation.id }}</h4>
+                <p class="text-muted mb-0">Booked on: {{ reservation.booking_date.strftime('%d %b %Y') }}</p>
+            </div>
+            <span class="badge bg-{{ 'success' if reservation.status == 'confirmed' else 'warning' }}">
+                {{ reservation.status.title() }}
+            </span>
+        </div>
+
+        <div class="train-info">
+            <div class="train-details">
+                <h5>{{ reservation.train.name }}</h5>
+                <p class="text-muted mb-2">Train No: {{ reservation.train.train_number }}</p>
+
+                <div class="d-flex gap-4">
+                    <div>
+                        <strong>{{ reservation.train.departure_time.strftime('%H:%M') }}</strong>
+                        <div class="text-muted">{{ reservation.train.source }}</div>
+                    </div>
+                    <div class="border-top my-3" style="width: 50px;"></div>
+                    <div>
+                        <strong>{{ reservation.train.arrival_time.strftime('%H:%M') }}</strong>
+                        <div class="text-muted">{{ reservation.train.destination }}</div>
+                    </div>
+                </div>
+
+                <div class="booking-details mt-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <small class="text-muted">Travel Date</small>
+                            <p class="mb-0">{{ reservation.travel_date.strftime('%d %b %Y') }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <small class="text-muted">Number of Seats</small>
+                            <p class="mb-0">{{ reservation.num_seats }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <small class="text-muted">Total Amount</small>
+                            <p class="mb-0 price">₹{{ reservation.total_price }}</p>
+                            <small class="text-muted">Payment: {{ reservation.payment_status|capitalize }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-info">
+        You haven't made any bookings yet.
+        <a href="{{ url_for('index') }}" class="alert-link">Search for trains</a> to make your first booking!
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
